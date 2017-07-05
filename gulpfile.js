@@ -2,6 +2,7 @@ var gulp   = require('gulp'),
 	uglify = require('gulp-uglify'),
 	cssMin =require('gulp-cssmin'),
 	gutil  = require('gulp-util'),
+	gwatch = require('gulp-watch'),
 	del	   = require('del'),
 	stripDebug = require('gulp-strip-debug');
 
@@ -35,4 +36,44 @@ gulp.task('clean', function() {
 	return del.sync([DIR.DIST + '/*']);
 });
 
-gulp.task('default', ['clean', 'js-minify', 'css-minify']);
+gulp.task('watch', function() {
+	
+	gulp.watch(SRC.JS).on('change', function(file) {
+		gutil.log('changed js file : ' + file.path);
+		del.sync([getDistFilePath(file)]);
+
+		gulp.src(file.path)
+		.pipe(stripDebug())
+		.pipe(uglify())
+		.pipe(gulp.dest(getDistChangeDir(file)));
+	});
+
+	gulp.watch(SRC.CSS).on('change', function(file) {
+		gutil.log('changed css file : ' + file.path);
+		del.sync([getDistFilePath(file)]);
+
+		gulp.src(file.path)
+		.pipe(cssMin())
+		.pipe(gulp.dest(getDistChangeDir(file)));
+	});
+});
+
+function getDistFilePath(file) {
+	if(file) {
+		return file.path.replace('\\src\\', '\\dist\\');
+	}
+	
+	throw new Error('file not exist');
+}
+
+function getDistChangeDir(file) {
+	try {
+		var distFile = getDistFilePath(file);
+		return distFile.substring(0, distFile.lastIndexOf('\\'));
+	}
+	catch(e) {
+		throw e;
+	}
+}
+
+gulp.task('default', ['clean', 'js-minify', 'css-minify', 'watch']);

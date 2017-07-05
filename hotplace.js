@@ -13,6 +13,8 @@ var app = express(),
 	logger = Logger('./lib/logger'),
 	mssqlDb = MssqlDb();
 
+var clientRoot = (process.env.JS_MODE && (process.env.JS_MODE).trim().toLowerCase() == 'production') ? 'dist' : 'src';
+
 logger.setLevel('DEBUG');
 
 app.engine('handlebars', handlebars({
@@ -28,7 +30,7 @@ app.set('port', process.env.PORT || 8000);
 app.disable('x-powered-by');
 app.disable('etag');
 
-app.use(express.static(path.join(__dirname, 'public/src')));
+app.use(express.static(path.join(__dirname, 'public/' + clientRoot)));
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
 

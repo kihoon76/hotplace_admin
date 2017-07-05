@@ -115,4 +115,4 @@ Ext.define('Ext.ux.CheckColumn', {
         }
         return '<div class="' + cls.join(' ') + '">&#160;</div>';
     }
-});
+});  
