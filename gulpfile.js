@@ -4,6 +4,7 @@ var gulp   = require('gulp'),
 	gutil  = require('gulp-util'),
 	gwatch = require('gulp-watch'),
 	del	   = require('del'),
+	livereload = require('gulp-livereload'),
 	stripDebug = require('gulp-strip-debug');
 
 var DIR = {
@@ -36,7 +37,7 @@ gulp.task('clean', function() {
 	return del.sync([DIR.DIST + '/*']);
 });
 
-gulp.task('watch', function() {
+gulp.task('watch-client', function() {
 	
 	gulp.watch(SRC.JS).on('change', function(file) {
 		gutil.log('changed js file : ' + file.path);
@@ -58,6 +59,22 @@ gulp.task('watch', function() {
 	});
 });
 
+gulp.task('watch-server', function() {
+	livereload.listen();
+
+	gulp.watch('config/*', ['reload']);
+	gulp.watch('lib/*', ['reload']);
+	gulp.watch('routes/*', ['reload']);
+	gulp.watch('utils/*', ['reload']);
+	gulp.watch('views/*', ['reload']);
+	gulp.watch('hotplace.js', ['reload']);
+});
+
+gulp.task('reload', function() {
+	return  gulp.src(['config/*', 'lib/*', 'routes/*', 'utils/*', 'views/*', 'hotplace.js'])
+			.pipe(livereload());
+});
+
 function getDistFilePath(file) {
 	if(file) {
 		return file.path.replace('\\src\\', '\\dist\\');
@@ -76,4 +93,4 @@ function getDistChangeDir(file) {
 	}
 }
 
-gulp.task('default', ['clean', 'js-minify', 'css-minify', 'watch']);
+gulp.task('default', ['clean', 'js-minify', 'css-minify', 'watch-client', 'watch-server', 'reload']);
