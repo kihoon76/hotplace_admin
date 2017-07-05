@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko" manifest="">
+	<head>
+		<title>hotplace 관리자</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- ExtJS 4.1.1 Files -->
+		<link rel="stylesheet" href="core/ver/4.1.1-rc2/css/ext-all-gray.css"/>
+		<link rel="stylesheet" href="resources/css/default.css"/>
+		<link rel="stylesheet" href="resources/css/icon.css"/>
+		<link rel="stylesheet" href="resources/css/map.css"/>
+		<link rel="stylesheet" href="ux/checkcolumn/css/checkheader.css"/>
+
+		<script src="core/ver/4.1.1-rc2/js/ext-all.js"></script>
+
+		<!-- locale -->
+		<script src="core/locale/ext-lang-ko.js"></script>
+
+		<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=SgnlyXnzstmDsYDhele7&submodules=visualization"></script>
+
+		<script>
+			Ext.onReady(function() {
+				Ext.getDoc().on('keydown', function(e, t) {
+					if(e.getKey() == e.BACKSPACE) {
+						if(t.hasAttribute('readonly')) {
+							return false;
+						}
+					}
+					else if(t.nodeName == 'BODY' || t.nodeName == 'DIV') return false;
+				});
+				
+				setTimeout(function() {
+					var loadingMask = Ext.get('loading-mask');
+					var loading = Ext.get('loading');
+
+					loading.fadeOut({ duration : 0.1, remove : true});
+
+					loadingMask.setOpacity(0.9);
+					loadingMask.shift({
+						xy : loading.getXY()
+					   ,remove : true
+					   ,duration : 1
+					   ,opacity : 0.1
+					   ,easing : 'easeOut'
+					});
+		
+				}, 2000);
+			});
+		</script>
+
+		<!-- App Files -->
+		<script src="app.js" charset="utf-8"></script>
+
+	</head>
+	<body onContextMenu="return false">
+		<div id="loading-mask"></div>
+		<div id="loading">
+			<div class="loading-indicator">Loading</div>
+		</div>
+	</body>
+</html>
+
+
+
+
+

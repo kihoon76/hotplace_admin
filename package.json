@@ -1,0 +1,23 @@
+{
+  "name": "hotplace_admin",
+  "version": "0.0.1",
+  "description": "hotplace admin",
+  "main": "hotplace.js",
+  "private": true,
+  "scripts": {
+    "start": "node hotplace.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.14.0",
+    "express3-handlebars": "^0.5.2",
+    "log4js": "^1.1.1",
+    "mssql": "^4.0.4",
+    "mysql": "^2.13.0",
+    "tedious": "^2.0.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-uglify": "^3.0.0"
+  }
+}
