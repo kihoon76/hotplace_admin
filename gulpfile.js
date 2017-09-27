@@ -91,6 +91,6 @@ function getDistChangeDir(file) {
 	catch(e) {
 		throw e;
 	}
-}
+} 
 
 gulp.task('default', ['clean', 'js-minify', 'css-minify', 'watch-client', 'watch-server', 'reload']);

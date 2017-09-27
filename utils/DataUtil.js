@@ -1,9 +1,7 @@
-var logger  = require('../lib/logger')('utils[DataUtil.js]'),
-	util = require('util');
+var log4js  = require('log4js'),
+	util 	= require('util');
 
-logger.setLevel('DEBUG');
-
-
+var logger   = log4js.getLogger('DataUtil.js');
 var DataUtil = function() {
 	var AJAX_FORMS = '{"success" : %s, "datas" : %s}';
 	

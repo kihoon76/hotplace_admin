@@ -1,18 +1,46 @@
-var express = require('express'),
-    Logger  = require('../lib/logger.js');
+var express    = require('express'),
+	log4js	   = require('log4js'),
+	db         = require('../lib/mssqlDb')();
 
-var logger  = Logger('routes[index.js]'),
-	router	= express.Router();
+var router     = express.Router();
+var logger	   = log4js.getLogger('index.js');
 
+router.use(function preProcess(req, res, next) {
+	logger.debug('요청 URL : ', req.originalUrl);
+	logger.debug('요청 METHOD : ', req.method);
 
-logger.setLevel('DEBUG');
-router.use(function timeLog(req, res, next) {
-    logger.info('Time : ', Date.now());
-    next();
+	if(req.method == 'GET') {
+		logger.debug('파라미터  query : ', req.query);
+	}
+	else {
+		logger.debug('파라미터 params: ', req.body);
+	}
+
+	next();
 });
 
-router.get('/' , function(req, res) {
-	res.render('index', { title: 'Express' });
+router.get('/', function(req, res) {
+	res.render('login');
+});
+
+router.post('/login', function(req, res) {
+	var id = req.body.id;
+	var pw = req.body.pw;
+
+	//if(id == '1' && pw == '1') res.re
+	//res.render('login');
+});
+
+router.get('/index', function(req, res) {
+	res.render('index');
+});
+
+router.get('/api/onnara/pnucode', function(req, res) {
+	db.getPnuCode('[데이터수집].[dbo].[SEL_온나라수집PNU_고유번호]', req, res);
+});
+
+router.post('/api/onnara', function(req, res) {
+	db.setProcedure('[데이터수집].[dbo].' + req.body.p_nm, req, res);
 });
 
 module.exports = router;

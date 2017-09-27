@@ -49,6 +49,26 @@
   height: 200px;
 }
 
+.x-window-header-text-default {
+	font-size:15px;
+}
+
+.x-border-box .x-form-text {
+	height: 30px;
+}
+
+.x-mask.splashscreen {
+    background-color: #FFF;
+    opacity: 1;
+    background-position: center;
+    background-image: url('../images/loading.gif') !important;
+	background-repeat: no-repeat;
+	z-index:90000;
+}
+
+
+
+
 
 
 
