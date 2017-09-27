@@ -1,6 +1,0 @@
-{
-	"host" : "aws.mysql",
-	"user" : "hoon",
-	"password" : "new1234!",
-	"database" : "innodb"
-}
