@@ -11,11 +11,9 @@ Ext.define('Hotplace.view.panel.CategoryPanel', {
     	    	 root : {
     	    		  expanded : true
 					 ,children : [{
-						 text : '맵유형', expand : true, iconCls : 'tree-expand'
+						 text : '회원관리', expand : true, iconCls : 'tree-expand'
 						,children : [{
-							text : '열지도맵', leaf : true, cate : 'mapTypes', id : 'cate-heatmap'
-						}, {
-							text : '점지도맵', leaf : true, cate : 'mapTypes', id : 'cate-dotmap'
+							text : '회원목록', leaf : true, cate : 'mapTypes', id : 'cate-member-list'
 						}]
 					 }]
     	    	 }

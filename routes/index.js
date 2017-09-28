@@ -1,5 +1,6 @@
 var express    = require('express'),
 	log4js	   = require('log4js'),
+	dataUtil   = require('../utils/DataUtil')
 	db         = require('../lib/mssqlDb')();
 
 var router     = express.Router();
@@ -26,9 +27,29 @@ router.get('/', function(req, res) {
 router.post('/login', function(req, res) {
 	var id = req.body.id;
 	var pw = req.body.pw;
+	var sess;
+	
+	if(id == 'test' && pw == '1') {
+		sess = req.session;
+		sess.username = 'test';
+		res.send(dataUtil.makeAjaxResponse(true, '""'));
+	}
+	else {
+		res.send(dataUtil.makeAjaxResponse(false, '""'));
+	}
+});
 
-	//if(id == '1' && pw == '1') res.re
-	//res.render('login');
+router.get('/logout', function(req, res) {
+	req.session.destroy(function(err) {
+		if(err) {
+			logger.error('logout error : ' + err);
+			res.send(dataUtil.makeAjaxResponse(false, '""'));
+		}
+		else {
+			res.send(dataUtil.makeAjaxResponse(true, '""'));
+		}
+		
+	});
 });
 
 router.get('/index', function(req, res) {

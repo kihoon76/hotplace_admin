@@ -49,18 +49,18 @@ Ext.onReady(function() {
 			align: 'stretch'
 		},
 		items: [{
-			html: '<img src="http://via.placeholder.com/600x400" style="width:600px; height:400px;">',
+			html: '<img src="http://hotplace.ddns.net:10001/resources/images/hotplace.png" style="width:600px; height:400px;">',
 			
 		}, {
 			xtype:'textfield',
 			fieldLabel:'아이디',
-			name: 'id',
+			id: 'id',
 			margin: '30 10 10 10'
 		}, {
 			xtype:'textfield',
 			fieldLabel:'비밀번호',
 			inputType: 'password',
-			name: 'pw',
+			id: 'pw',
 			margin: '10 10 10 10'
 		}]
 
@@ -79,13 +79,40 @@ Ext.onReady(function() {
 			listeners: {
 				click: {
 					fn: function() {
+						var param = {
+							id:Ext.getCmp('id').getValue(),
+							pw:Ext.getCmp('pw').getValue()
+						};
+
 						startLoading();
 						task.delay(1000000);
-						setTimeout(function() {
-							//window.location.href="http://hotplace.ddns.net:10001/index"
-							console.log('uu');
-							task.delay(0);
-						}, 1000);
+						Ext.Ajax.request({
+							url: 'http://hotplace.ddns.net:10001/login',
+							headers: {
+								'Content-Type': 'application/json'
+							},
+							method: 'POST',
+							jsonData: param,
+							success:function(res) {
+								try {
+									var data = JSON.parse(res.responseText);
+									if(data.success) {
+										window.location.href="http://hotplace.ddns.net:10001/index";
+									}
+									else {
+										Ext.MessageBox.alert('info', '로그인에 실패했습니다.');
+										task.delay(0);
+									}
+								}
+								catch(e) {
+									task.delay(0);
+									throw e;
+								}
+							},
+							failure: function() {
+								task.delay(0);
+							}
+						});
 					}
 				}
 			}

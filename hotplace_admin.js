@@ -9,7 +9,8 @@ var express   	= require('express'),
 	 path		= require('path'),
 	 config		= require('./lib/config.' + env),
 	 log4js		= require('log4js'),
-	 helmet		= require('helmet');
+	 helmet		= require('helmet'),
+	 session	= require('express-session');
 
 log4js.configure(config.log);
 
@@ -31,6 +32,12 @@ app.disable('etag');
 
 app.use(express.static(path.join(__dirname, 'public/src')));
 app.use(bodyParser.urlencoded({ extended: true}));
+app.use(bodyParser.json());
+app.use(session({
+	secret: '!@xochdpakfTmadlrPtlslfk$$',
+	resave: false,
+	saveUninitialized: true
+}));
 app.use(helmet());
 
 app.all('/*', requireLogin, function(req, res, next) {
@@ -38,8 +45,6 @@ app.all('/*', requireLogin, function(req, res, next) {
 });
 
 app.use('/', require('./routes/index'));
-
-
 
 /*app.use(function(err, req, res, next) {
 	res.status(500).render('error');
@@ -54,14 +59,18 @@ app.listen(app.get('port'), function() {
 });
 
 function requireLogin(req, res, next) {
-	var path = req.path;
-	if(path == '/' || path == '/login') {
+
+	if(bypass(req) || req.session.username != null) {
 		next();
 	}
 	else {
 		res.redirect('/');
 	}
-	
+}
+
+function bypass(req) {
+	var path = req.path;
+	return path == '/' || path == '/login' || path == '/logout' || path.indexOf('/resources/') > -1; 
 }
 
 

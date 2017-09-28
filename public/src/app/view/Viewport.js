@@ -16,9 +16,38 @@ Ext.define('Hotplace.view.Viewport', {
 			  ,target : this
 		   },{
                 id     : 'app-header'
-               ,xtype  : 'box'
+               ,xtype  : 'toolbar'//'box'
                ,region : 'north'
-               ,height : 40
+			   ,height : 30
+			   ,items: ['->',{
+					xtype: 'button',
+					text: '로그아웃',
+					listeners: {
+						click: function() {
+							Ext.Ajax.request({
+								url: 'http://hotplace.ddns.net:10001/logout',
+								method: 'GET',
+								success:function(res) {
+									try {
+										var data = JSON.parse(res.responseText);
+										if(data.success) {
+											window.location.href="http://hotplace.ddns.net:10001";
+										}
+										else {
+											Ext.MessageBox.alert('info', '로그아웃에 실패했습니다.');
+										}
+									}
+									catch(e) {
+										throw e;
+									}
+								},
+								failure: function() {
+									Ext.MessageBox.alert('info', '로그아웃에 실패했습니다.');
+								}
+							});
+						}
+					}
+			   }]
                //,html   : '<img src="../../resources/images/asher.png" style="width:200px; height:40px">'
             },{
             	id          : 'app-category'
